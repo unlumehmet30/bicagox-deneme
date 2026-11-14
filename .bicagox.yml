@@ -1,0 +1,4 @@
+minimum_severity: high
+rules:
+  - openapi-response-field-nullable
+ai_on_push: false

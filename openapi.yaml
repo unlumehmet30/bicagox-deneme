@@ -1,0 +1,20 @@
+openapi: 3.1.0
+info:
+  title: Bicagox playground pricing API
+  version: 1.0.0
+paths:
+  /price:
+    get:
+      operationId: getPrice
+      responses:
+        "200":
+          description: Current synthetic quote
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [amount]
+                properties:
+                  amount:
+                    type: number

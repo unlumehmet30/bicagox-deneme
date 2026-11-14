@@ -1,0 +1,59 @@
+name: Bicagox PR review
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+  issue_comment:
+    types: [created]
+
+permissions: {}
+
+concurrency:
+  group: bicagox-pr-${{ github.event.pull_request.number || github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  review:
+    if: >-
+      github.event_name == 'pull_request_target' ||
+      (github.event.issue.pull_request &&
+       github.event.comment.user.type != 'Bot' &&
+       contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
+       contains(github.event.comment.body, '@bicagox'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: unlumehmet30/bicagox
+          ref: 2f8143fad4fbd769a138ad6123f94b82a9176bef
+          path: .bicagox-engine
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm --prefix .bicagox-engine ci --ignore-scripts
+      - name: Review synthetic PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BICAGOX_REPORT_PATH: bicagox-report.json
+          BICAGOX_AI: 'false'
+        run: PYTHONPATH="$GITHUB_WORKSPACE/.bicagox-engine" python -m bicagox.github_review
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bicagox-review
+          path: bicagox-report.json
+          retention-days: 14
+          overwrite: true
+          if-no-files-found: ignore
