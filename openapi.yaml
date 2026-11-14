@@ -17,4 +17,4 @@ paths:
                 required: [amount]
                 properties:
                   amount:
-                    type: number
+                    type: [number, "null"]
