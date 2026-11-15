@@ -6,3 +6,5 @@ def test_reservation_boundary():
     held = [(3, 100), (2, 101)]
     assert available_stock(10, held, now=99) == 5
     assert cart_availability(10, held, now=101, requested=6)["can_add"]
+    assert available_stock(10, held, now=100) == 8
+    assert cart_availability(10, held, now=100, requested=8)["can_add"]
