@@ -4,4 +4,4 @@ def apply_coupon(subtotal: int, requested: int) -> int:
         raise ValueError("subtotal must be nonnegative")
     if requested <= 0:
         return 0
-    return requested
+    return min(subtotal, requested)
