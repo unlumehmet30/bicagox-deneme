@@ -43,7 +43,7 @@ jobs:
         with:
           token: ${{ secrets.BICAGOX_ENGINE_READ_TOKEN }}
           repository: unlumehmet30/bicagox
-          ref: 2f8143fad4fbd769a138ad6123f94b82a9176bef
+          ref: 399a12a984c822559f05aad1e44ed72b7a41d0e0
           path: .bicagox-engine
           persist-credentials: false
       - uses: actions/setup-python@v5
