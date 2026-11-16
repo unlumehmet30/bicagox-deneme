@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "checks": [
+    {
+      "id": "fold",
+      "kind": "window-embargo"
+    },
+    {
+      "id": "cut",
+      "kind": "snapshot-consistency",
+      "options": {
+        "sources": [
+          "sales",
+          "refunds"
+        ]
+      }
+    }
+  ]
+}

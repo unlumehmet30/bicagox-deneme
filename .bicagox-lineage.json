@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "consumers": [
+    {
+      "column": "publish.output",
+      "consumer": "dashboard:sales"
+    }
+  ],
+  "exposure": {
+    "sensitive": [
+      "raw.sales.email"
+    ],
+    "sinks": [
+      "dashboard:sales"
+    ]
+  }
+}
